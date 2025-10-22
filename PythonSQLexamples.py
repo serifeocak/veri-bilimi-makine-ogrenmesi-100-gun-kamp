@@ -139,6 +139,74 @@ def aggregate_functions(cursor):
     result = cursor.fetchall()
     print(result)
 
+def questions():
+    '''
+    Basit
+    1) Bütün kursların bilgilerini getirin
+    2) Sadece eğitmenlerin ismini ve ders ismi bilgilerini getirin
+    3) Sadece 21 yaşındaki öğrencileri getirin
+    4) Sadece Chicago'da yaşayan öğrencileri getirin
+    5) Sadece 'Dr. Anderson' tarafından verilen dersleri getirin
+    6) Sadece ismi 'A' ile başlayan öğrencileri getirin
+    7) Sadece 3 ve üzeri kredi olan dersleri getirin
+
+    Detaylı
+    1) Öğrencileri alphabetic şekilde dizerek getirin
+    2) 20 yaşından büyük öğrencileri, ismine göre sıralayarak getirin
+    3) Sadece 'New York' veya 'Chicago' da yaşayan öğrencileri getirin
+    4) Sadece 'New York' ta yaşamayan öğrencileri getirin
+    '''
+
+
+def answers(cursor):
+    print("----------Sınav Cevapları----------")
+    # Basit
+    print("1. Bütün kursların bilgilerini getirin")
+    cursor.execute("SELECT * FROM Courses")
+    print(cursor.fetchall())
+
+    print("2. Sadece eğitmenlerin ismini ve ders ismi bilgilerini getirin")
+    cursor.execute("SELECT course_name, instructor FROM Courses")
+    print(cursor.fetchall())
+
+    print("3. Sadece 21 yaşındaki öğrencileri getirin")
+    cursor.execute("SELECT * FROM Students WHERE age = 21")
+    print(cursor.fetchall())
+
+    print("4. Sadece Chicago'da yaşayan öğrencileri getirin")
+    cursor.execute("SELECT * FROM Students WHERE city = 'Chicago'")
+    print(cursor.fetchall())
+
+    print("5. Sadece 'Dr. Anderson' tarafından verilen dersleri getirin")
+    cursor.execute("SELECT * FROM Courses WHERE instructor = 'Dr. Anderson'")
+    print(cursor.fetchall())
+
+    print("6. Sadece ismi 'A' ile başlayan öğrencileri getirin")
+    cursor.execute("SELECT * FROM Students WHERE name LIKE 'A%'")
+    print(cursor.fetchall())
+
+    print("7. Sadece 3 ve üzeri kredi olan dersleri getirin")
+    cursor.execute("SELECT * FROM Courses WHERE credits >= 3")
+    print(cursor.fetchall())
+
+    # Detaylı
+
+    print("1. Öğrencileri alphabetic şekilde dizerek getirin")
+    cursor.execute("SELECT * FROM Students ORDER BY name")
+    print(cursor.fetchall())
+
+    print("2. 20 yaşından büyük öğrencileri, ismine göre sıralayarak getirin")
+    cursor.execute("SELECT name, age FROM Students WHERE age > 20 ORDER BY name")
+    print(cursor.fetchall())
+
+    print("3. Sadece 'New York' veya 'Chicago' da yaşayan öğrencileri getirin")
+    cursor.execute("SELECT name, city FROM Students WHERE city IN ('New York', 'Chicago')")
+    print(cursor.fetchall())
+
+    print("4. Sadece 'New York' ta yaşamayan öğrencileri getirin")
+    cursor.execute("SELECT name, city FROM Students WHERE city != 'New York'")
+    print(cursor.fetchall())
+
 def main():
     conn, cursor = create_database()
 
@@ -148,6 +216,7 @@ def main():
         basic_sql_operations(cursor)
         sql_update_delete_insert_operations(conn, cursor)
         aggregate_functions(cursor)
+        answers(cursor)
         conn.commit()
 
     except sqlite3.Error as e:
@@ -159,3 +228,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
